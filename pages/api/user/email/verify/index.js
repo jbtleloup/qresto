@@ -1,12 +1,8 @@
 import crypto from 'crypto';
-// import sgMail from '@sendgrid/mail';
 import Mailgun from 'mailgun-js';
 import nextConnect from 'next-connect';
 import { error } from 'next/dist/build/output/log';
 import middleware from '../../../../../middlewares/middleware';
-
-// console.log(process.env.SENDGRID_API_KEY);
-// sgMail.setApiKey('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');
 
 const apiKey = process.env.MAILGUN_API_KEY;
 const domain = process.env.DOMAIN;
