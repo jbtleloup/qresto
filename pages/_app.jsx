@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import App from 'next/app';
 import { UserContextProvider } from '../components/UserContext';
+import '../css/tailwind.css';
 
 class MyApp extends App {
   render() {

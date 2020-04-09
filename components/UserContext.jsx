@@ -26,7 +26,7 @@ const UserContextProvider = ({ children }) => {
     switch (action.type) {
       case 'fetch':
         return fetch('/api/session')
-          .then(res => res.json())
+          .then((res) => res.json())
           .then(({ data: { isLoggedIn, user } }) => dispatch({
             type: 'set',
             data: { isLoggedIn, user },

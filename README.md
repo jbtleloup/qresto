@@ -107,7 +107,7 @@ Start the development server by running `yarn dev` or `npm run dev`. The project
 
 #### `.env`
 
-I include my own MongoDB, Cloudinary, SendGrid environment variables in [.env.example](.env.example) for experimentation purposes. Please replace them with your owns and refrain from sabotaging them. You can try them in development by renaming it into `.env`.
+I include my own MongoDB, Cloudinary, SendGrid environment variables in [.env.example](.env) for experimentation purposes. Please replace them with your owns and refrain from sabotaging them. You can try them in development by renaming it into `.env`.
 
 In production, it is recommended to set the environment variables using the options provided by your cloud/hosting providers. **Do not use or commit `.env`**.
 

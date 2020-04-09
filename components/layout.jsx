@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import fetchSwal from '../lib/fetchSwal';
@@ -9,120 +9,14 @@ export default ({ children }) => {
     state: { isLoggedIn },
     dispatch,
   } = useContext(UserContext);
+  const [isOpen, setIsOpen] = useState(false);
   const handleLogout = (event) => {
     event.preventDefault();
-    fetchSwal.delete('/api/session').then(data => data.ok !== false && dispatch({ type: 'clear' }));
+    fetchSwal.delete('/api/session')
+      .then((data) => data.ok !== false && dispatch({ type: 'clear' }));
   };
   return (
     <>
-      <style jsx global>
-        {`
-          a {
-            text-decoration: none !important;
-            cursor: pointer;
-            color: #0070f3;
-          }
-          a:hover {
-            color: #0366d6;
-          }
-          body {
-            margin: 0;
-            padding: 0;
-            color: #111;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-              'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-              'Helvetica Neue', sans-serif;
-            background-color: #fff;
-          }
-          h2 {
-            color: #333;
-            text-align: center;
-          }
-          label {
-            display: flex;
-            margin-bottom: 0.5rem;
-            align-items: center;
-            width: 100%;
-          }
-          form {
-            margin-bottom: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
-          input,
-          textarea {
-            font-family: monospace;
-            flex: 1 1 0%;
-            margin-left: 0.5rem;
-            box-shadow: none;
-            width: 100%;
-            color: #000;
-            background-color: transparent;
-            border: 1px solid #d8d8d8;
-            border-radius: 5px;
-            outline: 0px;
-            padding: 10px 25px;
-          }
-          button {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #fff;
-            border-radius: 5px;
-            border: none;
-            background-color: #000;
-            cursor: pointer;
-            transition: all 0.2s ease 0s;
-            padding: 10px 25px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
-          }
-          button:hover,
-          button:active {
-            transform: translate3d(0px, -1px, 0px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-          }
-          header {
-            border-bottom: 1px solid #d8d8d8;
-          }
-          nav {
-            max-width: 1040px;
-            margin: auto;
-            padding: 1rem 2rem;
-          }
-          nav div {
-            float: right;
-          }
-          nav div a {
-            font-size: 0.9rem;
-            margin-left: 1rem;
-          }
-          nav h1 {
-            font-size: 1rem;
-            color: #444;
-            margin: 0;
-            font-weight: 700;
-            float: left;
-          }
-          nav:after {
-            content: '';
-            clear: both;
-            display: table;
-          }
-          main {
-            padding: 1rem;
-            max-width: 1040px;
-            margin: 0 auto;
-          }
-          footer {
-            text-align: center;
-            font-size: 0.8rem;
-            margin-top: 1rem;
-            padding: 3rem;
-            color: #888;
-          }
-        `}
-      </style>
       <Head>
         <title>Next.js + MongoDB App</title>
         <meta
@@ -134,7 +28,7 @@ export default ({ children }) => {
           name="description"
           content="nextjs-mongodb-app is a continously developed app built with Next.JS and MongoDB. This project goes further and attempts to integrate top features as seen in real-life apps."
         />
-        <meta property="og:title" content="Next.js + MongoDB App" />
+        <meta property="og:title" content="Next.js + MongoDB App"/>
         <meta
           property="og:description"
           content="nextjs-mongodb-app is a continously developed app built with Next.JS and MongoDB. This project goes further and attempts to integrate top features as seen in real-life apps."
@@ -144,62 +38,94 @@ export default ({ children }) => {
           content="https://repository-images.githubusercontent.com/201392697/5d392300-eef3-11e9-8e20-53310193fbfd"
         />
       </Head>
-      <header>
-        <nav>
+      <header
+        className="bg-red-800 sm:flex sm:justify-between sm:px-4 sm:py-3 sm:items-center text-white"
+      >
+        <div className="flex items-center justify-between px-4 py-3 sm:p-0">
+          <div>
+            <img className="h-16 object-contain" src="/logo.png" alt="logo"/>
+          </div>
           <Link href="/">
             <a>
-              <h1>Next.js + MongoDB App</h1>
+              <h1 className="sm:text-4xl text-2xl">Qresto</h1>
             </a>
           </Link>
-          <div>
-            {!isLoggedIn ? (
-              <>
-                <Link href="/login">
-                  <a>Sign in</a>
-                </Link>
-                <Link href="/signup">
-                  <a>Sign up</a>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/profile">
-                  <a>Profile</a>
-                </Link>
-                {/* eslint-disable-next-line */}
-                <a href="/" role="button" onClick={handleLogout}>
-                  Logout
-                </a>
-              </>
-            )}
+          <div className="sm:hidden">
+            <button
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              className="block focus:outline-none"
+            >
+              <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                <path
+                  className={`${isOpen ? 'block' : 'hidden'}`}
+                  fill-rule="evenodd"
+                  d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"/>
+                <path
+                  className={`${!isOpen ? 'block' : 'hidden'}`}
+                  fill-rule="evenodd"
+                  d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"/>
+              </svg>
+            </button>
           </div>
-        </nav>
+        </div>
+        <div className={`${isOpen ? 'block' : 'hidden'} sm:flex px-2 pt-2 pb-4`}>
+          {!isLoggedIn ? (
+            <>
+              <Link href="/login">
+                <a>Sign in</a>
+              </Link>
+              <Link href="/signup">
+                <a>Sign up</a>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/menu">
+                <a
+                  className="block rounded px-2 py-1 font-semibold hover:bg-gray-800 sm:mt-0 sm:ml-2"
+                >
+                  Menus
+                </a>
+              </Link>
+              <Link href="/dish">
+                <a
+                  className="block rounded px-2 py-1 font-semibold hover:bg-gray-800 sm:mt-0 sm:ml-2"
+                >
+                  Plats
+                </a>
+              </Link>
+              <Link href="/dish/add">
+                <a
+                  className="block rounded px-2 py-1 font-semibold hover:bg-gray-800 sm:mt-0 sm:ml-2"
+                >
+                  Ajouter Plat
+                </a>
+              </Link>
+              <Link href="/profile">
+                <a
+                  className="block rounded px-2 py-1 font-semibold hover:bg-gray-800 sm:mt-0 sm:ml-2"
+                >
+                  Profile
+                </a>
+              </Link>
+              <a
+                href="/"
+                role="button"
+                onClick={handleLogout}
+                className="block rounded px-2 py-1 font-semibold hover:bg-gray-800 sm:mt-0 sm:ml-2"
+              >
+                Logout
+              </a>
+            </>
+          )}
+        </div>
       </header>
 
-      <main>{children}</main>
-      <footer>
-        <p>
-          Made with
-          {' '}
-          <span role="img" aria-label="Love">
-            ❤️
-          </span>
-          ,
-          {' '}
-          <span role="img" aria-label="Fire">
-            🔥
-          </span>
-          , and a keyboard by
-          {' '}
-          <a href="https://www.hoangvvo.com/">Hoang Vo</a>
-.
-        </p>
-        <p>
-          Source code is on
-          {' '}
-          <a href="https://github.com/hoangvvo/nextjs-mongodb-app">Github</a>
-.
-        </p>
+      <main className="bg-gray-200 font-sans">{children}</main>
+
+      <footer className="bg-red-800 text-white sm:p-8 p-0 mt-10">
+        <p className="text-center">Q Resto Tout droits Réservés 2020</p>
       </footer>
     </>
   );
